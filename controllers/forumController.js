@@ -39,9 +39,11 @@ const createForum = async(req, res)=>{
         forumName,
         forumCategories,
         forumDescription,
-        forumPublisher: req.user.username,
-        user: req.user.userId
+   
+  
     })
+            // forumPublisher: req.user.username,
+          // user: req.user.userId
     res.status(StatusCodes.CREATED).json({msg: 'Forum Created Successfully', forum})
 }
 
