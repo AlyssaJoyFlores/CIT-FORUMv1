@@ -57,6 +57,10 @@ server.use('/api/forums', require('./routes/forumRoute'))
 server.use(notFoundMiddleware)
 server.use(errorHandlerMiddleware)
 
+server.get('/', (req, res) => {
+    res.status(200).json({message: 'link to the client'})
+    console.log('link to the client')
+})
 
 
 const port = process.env.PORT || 3000;
