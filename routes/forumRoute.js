@@ -17,12 +17,12 @@ const {
 
 
 // routes for forum
-router.route('/getAllForums').get(authenticateUser, getAllForums)
-router.route('/getUserCreateForum').get(authenticateUser, getUserCreateForum)
-router.route('/createForum').post(authenticateUser, createForum)
-router.route('/getSingleForum/:id').get(authenticateUser, getSingleForum)
-router.route('/updateForum/:id').patch(authenticateUser, updateForum)
-router.route('/deleteForum/:id').delete(authenticateUser, deleteForum)
+router.route('/getAllForums').get(getAllForums)
+router.route('/getUserCreateForum').get(getUserCreateForum)
+router.route('/createForum').post(createForum)
+router.route('/getSingleForum/:id').get(getSingleForum)
+router.route('/updateForum/:id').patch(updateForum)
+router.route('/deleteForum/:id').delete(deleteForum)
 
 // routes for comment
 router.route('/createComment/:id').post(authenticateUser, createComment);
