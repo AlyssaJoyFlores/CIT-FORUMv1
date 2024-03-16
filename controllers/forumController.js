@@ -28,6 +28,49 @@ const getUserCreateForum = async(req, res)=>{
 }
 
 
+const getTopForums = async (req, res) => {
+
+    const topForums = await Forum.aggregate([
+        {
+            $project: {
+                forumName: 1,
+                forumPublisher: 1,
+                forumCategories: 1,
+                forumDescription: 1,
+                totalComments: { $size: "$comments" }
+            }
+        },
+        {
+            $match: {
+                totalComments: { $gt: 2 }
+            }
+        },
+        {
+            $sort: { totalComments: -1 }
+        }
+    ]);
+
+    res.status(StatusCodes.OK).json({topForums});
+}
+
+
+const searchForum = async (req, res) => {
+    const { search } = req.query;
+
+    const searchResult = await Forum.find({
+        $or: [
+            { forumName: { $regex: search, $options: 'i' } },
+            { forumDescription: { $regex: search, $options: 'i' } },
+            { forumCategories: { $regex: search, $options: 'i' } }
+        ]
+    });
+
+    res.status(StatusCodes.OK).json(searchResult);
+
+}
+
+
+
 const createForum = async(req, res)=>{
     console.log(req.body);
     const {forumName, forumCategories, forumDescription} = req.body;
@@ -39,11 +82,9 @@ const createForum = async(req, res)=>{
         forumName,
         forumCategories,
         forumDescription,
-   
-  
+        forumPublisher: req.user.username,
+        user: req.user.userId
     })
-            // forumPublisher: req.user.username,
-          // user: req.user.userId
     res.status(StatusCodes.CREATED).json({msg: 'Forum Created Successfully', forum})
 }
 
@@ -94,7 +135,9 @@ const createComment = async (req, res) => {
 
     forum.comments.push({
         user_id: req.user.id,
-        comment: comment
+        commentedBy: req.user.username,
+        comment: comment,
+        
     });
 
     await forum.save();
@@ -125,6 +168,8 @@ module.exports = {
     getAllForums,
     getSingleForum,
     getUserCreateForum,
+    getTopForums,
+    searchForum,
     createForum,
     updateForum,
     deleteForum,

@@ -12,6 +12,9 @@ const commentSchema = new mongoose.Schema({
     },
     comment: {
         type: String
+    },
+    commentedBy: {
+        type: String
     }
 }, {
     timestamps: true
