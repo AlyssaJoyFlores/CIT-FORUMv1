@@ -35,7 +35,12 @@ server.use(morgan('tiny'))
 
 
 
-server.use(cors())
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true,
+}
+server.use(cors(corsOptions))
+
 
 
 server.use(express.json()); //passer - to be able to receive the data from the client into the server
